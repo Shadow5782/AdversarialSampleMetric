@@ -5,7 +5,7 @@ This is the code repository to the paper "An Analytical Dive into Finding a Metr
 
 When using the metric please cite:
 ```
-
+TBD
 ```
 
 As the implemented attacks were from the "__TorchAttacks__" package, please also cite:
