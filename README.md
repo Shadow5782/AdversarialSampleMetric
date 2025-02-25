@@ -1,7 +1,7 @@
 
 # A Metric to Assess Neural Network Resilience Against Adversarial Samples
 
-This is the code repository to the paper "An Analytical Dive into Finding a Metric to Assess Neural Network Resilience Against Adversarial Samples". The results of the evaluation in the paper can be found in detail in folder __"metric_results"__.
+This is the code repository to the research paper "Towards a Metric to Assess Neural NetworkResilience Against Adversarial Samples". The results of the evaluation in the paper can be found in detail in folder __"metric_results"__.
 
 When using the metric please cite:
 ```
