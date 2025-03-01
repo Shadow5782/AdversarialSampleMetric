@@ -51,14 +51,14 @@ With every datapoint stored as a .png-file we can manually separate, move or cop
 
 For training a "test" and "train" folder is necessary, for the substitute data generation a start-data folder is necessary and for the metric calculation a "targeted"- and "untargeted"-data folder is necessary.
 
-The used data for the evaluation in the paper is stored in the zip-files in "data_zips". Note that the "train.zip" and "train1.zip" data needs to merged in order to form the original "train"-data.
+The used data for the evaluation in the paper is stored in the zip-files in "data_zips". Note that the "train.zip" and "train1.zip" data needs to be merged in order to form the original "train"-data.
 
 #### Usage of "decode_torchvision_data.py"
 - _data_path_: Path to the folder where the original CIFAR10 data will be downloaded to.
 - _output_path_: Path to where the "train" and "test" folder with the .png-files will be written.
 
 ### Setting the right indices: "rename_indices.py"
-As described every folder containing data needs to have indices starting at 0. This script renames the datapoints to start with the correct indices.
+As described, every folder containing data needs to have indices starting at 0. This script renames the datapoints to start with the correct indices.
 
 #### Usage of "rename_indices.py"
 - _data_path_: Path to the folder containing the incorrectly indexed .png-files.
@@ -70,7 +70,7 @@ In order to perform a targeted attack, every target needs to be set to a random 
 - _data_path_: Path to the folder containing the .png-files which need to get random targets.
 
 ### Training a white box model: "network_training.py"
-Now a white box model can be trained. The architecture of the model can be written as a class in a seperate file an imported into the code at line 139. All the hyperparameters can be set from line 115 aswell. 
+Now a white box model can be trained. The architecture of the model can be written as a class in a seperate file and imported into the code at line 139. All the hyperparameters can be set from line 115 aswell. 
 
 The script runs the training with the set hyperparameters on a cuda-device if available. In the end a .pth-checkpoint will be stored and a result-graph created. 
 
@@ -120,7 +120,7 @@ Now the metric can be calculated as a white-box, grey-box and black-box model ha
 - _distance_limit_max_: Maximum L2-distance limitation for the last metric run.
 - _distance_limit_min_: Minimum L2-distance limitation for the first metric run.
 - _distance_steps_: Amount of metric runs from min to max.
-- _max_iterations_: Maximum amount of iterations one attack can run.
+- _max_iterations_: Maximum number of iterations one attack can run.
 
 Note that the corresponing architectures of the white-box, grey-box and black-box model must be imported at line 65, 72, 79.
 
