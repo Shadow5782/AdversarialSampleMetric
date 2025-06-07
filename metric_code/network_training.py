@@ -21,6 +21,7 @@ if torch.cuda.is_available():
 else:
     device = torch.device("cpu")
 
+
 # One epoch train run
 def train_net(epoch: int, network: nn.Module, optimizer: optim.Adam, train_loader: torch.utils.data.DataLoader, log_interval: int) -> list[float]:
     # Setup network and evaluation storage
@@ -37,20 +38,21 @@ def train_net(epoch: int, network: nn.Module, optimizer: optim.Adam, train_loade
         # Train network
         optimizer.zero_grad()
         y_pred = network(data)
-        train_loss = F.cross_entropy(y_pred,target)
+        train_loss = F.cross_entropy(y_pred, target)
         train_loss.backward()
         optimizer.step()
 
         # Calc batch accuracy
         if cnt % log_interval == 0:
-            acc = torch.sum(torch.argmax(y_pred,dim=1) == target).item()/len(data)
+            acc = torch.sum(torch.argmax(y_pred, dim=1) == target).item() / len(data)
             print(f"Batch {cnt} \tTrain ACC: {acc} ")
             train_accs.append(acc)
-        
+
         # Update batch counter
         cnt += 1
-    
+
     return train_accs
+
 
 # Test function that applies the test set to the trained net
 def test_net(epoch: int, network: nn.Module, test_loader: torch.utils.data.DataLoader, datasource: str) -> tuple[float, float]:
@@ -64,16 +66,17 @@ def test_net(epoch: int, network: nn.Module, test_loader: torch.utils.data.DataL
         target = target.to(device)
         # Calc loss and accuracy for current batch
         y_pred = network(data)
-        loss += F.cross_entropy(y_pred,target,reduction="sum").item()
-        acc += torch.sum(torch.argmax(y_pred,dim=1) == target).item()
+        loss += F.cross_entropy(y_pred, target, reduction="sum").item()
+        acc += torch.sum(torch.argmax(y_pred, dim=1) == target).item()
     # Calc loss and accuracy for all natches
     loss /= len(test_loader.dataset)
     acc /= len(test_loader.dataset)
     print(f"Epoch {epoch} \t{datasource} ACC: {acc} {datasource} Loss: {loss}")
     return loss, acc
 
+
 # Main function managing epochs and tests
-def run_nn(network: nn.Module, optimizer: optim.Adam, train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader, n_epochs: int, log_interval: int, test_datasource:str) -> tuple[list[float], list[float], list[float]]:
+def run_nn(network: nn.Module, optimizer: optim.Adam, train_loader: torch.utils.data.DataLoader, test_loader: torch.utils.data.DataLoader, n_epochs: int, log_interval: int, test_datasource: str) -> tuple[list[float], list[float], list[float]]:
     # Prepare lists for loss and accuracy storage
     train_accs = []
     test_losses = []
@@ -81,19 +84,20 @@ def run_nn(network: nn.Module, optimizer: optim.Adam, train_loader: torch.utils.
 
     # Start training loop
     print("Started Training")
-    for epoch in range(1,n_epochs+1):
+    for epoch in range(1, n_epochs + 1):
         # Train NN
-        train_acc = train_net(epoch,network,optimizer,train_loader,log_interval)
+        train_acc = train_net(epoch, network, optimizer, train_loader, log_interval)
         # Store train ACCs
         train_accs.extend(train_acc)
         # Test NN
-        test_loss, test_acc = test_net(epoch,network,test_loader,test_datasource)
+        test_loss, test_acc = test_net(epoch, network, test_loader, test_datasource)
         # Store test ACC and loss
         test_losses.append(test_loss)
         test_accs.append(test_acc)
     print("Finished Training")
-    
-    return train_accs,test_accs,test_losses
+
+    return train_accs, test_accs, test_losses
+
 
 if __name__ == '__main__':
     # Path to the folder containing train and test data
@@ -120,7 +124,7 @@ if __name__ == '__main__':
     # Create train data dataloader
     train_loader = torch.utils.data.DataLoader(
         train_data,
-        batch_size=batch_size, 
+        batch_size=batch_size,
         shuffle=True,
         num_workers=5,
         collate_fn=dataset.collate_function
@@ -129,7 +133,7 @@ if __name__ == '__main__':
     # Create test data dataloader
     test_loader = torch.utils.data.DataLoader(
         test_data,
-        batch_size=1000, 
+        batch_size=1000,
         shuffle=False,
         num_workers=2,
         collate_fn=dataset.collate_function
@@ -139,47 +143,47 @@ if __name__ == '__main__':
     from evaluation_models.WhiteBox_Model import Net
     network = Net()
     network = network.to(device)
-    optimizer = optim.Adam(params=network.parameters(),lr=learning_rate)
+    optimizer = optim.Adam(params=network.parameters(), lr=learning_rate)
 
     # Train network with optimizer
-    train_acc,test_acc,test_loss = run_nn(network,optimizer,train_loader,test_loader,num_epochs,log_interval,"Test")
+    train_acc, test_acc, test_loss = run_nn(network, optimizer, train_loader, test_loader, num_epochs, log_interval, "Test")
 
     # Evaluate the ACC on train data
-    _, train_final_acc = test_net(0,network,train_loader,"Train")
+    _, train_final_acc = test_net(0, network, train_loader, "Train")
 
     # Save model checkpoint
     torch.save(network.state_dict(), working_dir + "/" + model_name + ".pth")
 
     # Create evaluation graphs
     x_axis = []
-    for i in range(0,num_epochs):
-        for j in range(0,len(train_loader),log_interval):
-            x_axis.append(i+(j*(1/len(train_loader))))
+    for i in range(0, num_epochs):
+        for j in range(0, len(train_loader), log_interval):
+            x_axis.append(i + (j * (1 / len(train_loader))))
 
-    fig, ax = plt.subplots(1,3,figsize=(19,5))
+    fig, ax = plt.subplots(1, 3, figsize=(19, 5))
 
     # Graph for train ACC
-    ax[0].plot(x_axis,train_acc,label="White Box Adam")
+    ax[0].plot(x_axis, train_acc, label="White Box Adam")
     ax[0].set_xlabel("Epochs")
     ax[0].set_ylabel("ACC")
     ax[0].legend()
     ax[0].set_title("Train ACC")
 
-    x_axis_epochs = np.arange(1,num_epochs+1)
+    x_axis_epochs = np.arange(1, num_epochs + 1)
 
     # Graph for test ACC
-    ax[1].plot(x_axis_epochs,test_acc,label="White Box Adam")
+    ax[1].plot(x_axis_epochs, test_acc, label="White Box Adam")
     ax[1].set_xlabel("Epochs")
     ax[1].set_ylabel("ACC")
-    ax[1].set_xlim(1,num_epochs)
+    ax[1].set_xlim(1, num_epochs)
     ax[1].set_title("Test ACC")
     ax[1].legend()
 
     # Graph for test loss
-    ax[2].plot(x_axis_epochs,test_loss, label="White Box Adam")
+    ax[2].plot(x_axis_epochs, test_loss, label="White Box Adam")
     ax[2].set_xlabel("Epochs")
     ax[2].set_ylabel("Loss")
-    ax[2].set_xlim(1,num_epochs)
+    ax[2].set_xlim(1, num_epochs)
     ax[2].set_title("Test Cross Entropy Loss")
     ax[2].legend()
 

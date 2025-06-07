@@ -10,7 +10,7 @@ for i in range(0, len(file_names)):
     ending = name[5].split(".")
     new_target = int(ending[0])
     while True:
-        new_target = random.randint(0,9)
+        new_target = random.randint(0, 9)
         if new_target != int(ending[0]):
             break
     new_name = f"{name[0]}_{name[1]}_{name[2]}_{name[3]}_{name[4]}_{new_target}.png"

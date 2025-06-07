@@ -1,19 +1,23 @@
 # Description: Function to plot metric results to a graph/table
 # Author: Johannes Geier
-# Date: 19.12.2024
+# Date: 07.06.2025
 
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
 
+
 # Print metric results as a graph with a table
-def print_graph_and_table(filepath: str, filename: str):
+def print_graph_and_table(filepath: str, filename: str, use_acc: bool = True):
     # Open results list from pickle file
-    with open(filepath + "/" + filename,"rb") as file:
-        results = pickle.load(file)
-    
+    with open(filepath + "/" + filename, "rb") as file:
+        results = np.array(pickle.load(file))
+
     # Plot robustness vs perturbation curve
-    plt.plot(results[0],results[2],"o-r")
+    if use_acc:
+        plt.plot(results[0], 1 - results[2], "o-r")
+    else:
+        plt.plot(results[0], results[2], "o-r")
     plt.ylim(top=1, bottom=0)
     plt.ylabel("Robustness Score")
     plt.xlabel("Perturbation")
@@ -21,18 +25,18 @@ def print_graph_and_table(filepath: str, filename: str):
     plt.grid()
 
     plt.savefig(filepath + "/metricCurve.png")
-    
+
     plt.clf()
 
     # Plot loss vs perturbation curve
-    plt.plot(results[0],results[1],"o-b")
+    plt.plot(results[0], results[1], "o-b")
     plt.ylabel("Loss")
     plt.xlabel("Perturbation")
     plt.title("Loss vs Perturbation Curve")
     plt.grid()
 
     plt.savefig(filepath + "/lossCurve.png")
-    
+
     plt.clf()
 
     # Plot table with exact scores
@@ -41,18 +45,24 @@ def print_graph_and_table(filepath: str, filename: str):
     columns = [f"\u03B4: {i:.3}" for i in results[0]]
 
     cell_text = []
-    for row in results[1:]:
-        cell_text.append([f"{i:.5}" for i in row])
+    for j in range(1, results.shape[0]):
+        if j == 2:
+            if use_acc:
+                cell_text.append([f"{1 - i:.5}" for i in results[j]])
+            else:
+                cell_text.append([f"{i:.5}" for i in results[j]])
+        else:
+            cell_text.append([f"{i:.5}" for i in results[j]])
 
     rcolors = plt.cm.BuPu(np.full(len(rows), 0.1))
     ccolors = plt.cm.BuPu(np.full(len(columns), 0.1))
 
-    plt.figure(figsize=(15,7),tight_layout={'pad':1})
-    
+    plt.figure(figsize=(15, 7), tight_layout={'pad': 1})
+
     # Plot table
     table = plt.table(cellText=cell_text, colLabels=columns, colColours=ccolors, rowLabels=rows, rowColours=rcolors, loc="center")
     table.scale(1, 1.5)
-    
+
     ax = plt.gca()
     ax.get_xaxis().set_visible(False)
     ax.get_yaxis().set_visible(False)
@@ -64,7 +74,8 @@ def print_graph_and_table(filepath: str, filename: str):
     # Save plot
     plt.savefig(filepath + "/ScoreTable.png")
 
-def print_combined_graphs(paths: list[str], filename: str, labels: list[str]):
+
+def print_combined_graphs(paths: list[str], filename: str, labels: list[str], use_acc: bool = True):
     if len(paths) != len(labels):
         raise Exception("Violation: len(paths) != len(labels) != len(filenames)")
 
@@ -75,8 +86,11 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str]):
 
     for i in range(0, len(paths)):
         with open(paths[i] + "/" + filename, "rb") as file:
-            results = pickle.load(file)
-            plt.plot(results[0], results[2], f"o-{colors[i]}",label=labels[i])
+            results = np.array(pickle.load(file))
+            if use_acc:
+                plt.plot(results[0], 1 - results[2], f"o-{colors[i]}", label=labels[i])
+            else:
+                plt.plot(results[0], results[2], f"o-{colors[i]}", label=labels[i])
     # plt.ylim(top=1, bottom=0)
     plt.ylabel("Robustness Score")
     plt.xlabel("Perturbation")
@@ -91,7 +105,7 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str]):
     for i in range(0, len(paths)):
         with open(paths[i] + "/" + filename, "rb") as file:
             results = pickle.load(file)
-            plt.plot(results[0], results[1], f"o-{colors[i]}",label=labels[i])
+            plt.plot(results[0], results[1], f"o-{colors[i]}", label=labels[i])
     plt.ylabel("Loss")
     plt.xlabel("Perturbation")
     plt.title("Loss vs Perturbation Curve")
@@ -100,9 +114,15 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str]):
 
     plt.savefig("lossCurve.png")
 
+
 if __name__ == "__main__":
     # Testing
-    # print_graph_and_table("2_Code/attacks/standardNet", "metric_outputs.pkl")
+    # print_graph_and_table("metric_results/advTrainCW", "metric_outputs.pkl")
+    # print_graph_and_table("metric_results/advTrainDF", "metric_outputs.pkl")
+    # print_graph_and_table("metric_results/advTrainPGD", "metric_outputs.pkl")
+    # print_graph_and_table("metric_results/advTrainPGDandCW", "metric_outputs.pkl")
+    # print_graph_and_table("metric_results/standardNet", "metric_outputs.pkl")
+
     paths = [
         "metric_results/advTrainCW",
         "metric_results/advTrainDF",
@@ -112,4 +132,4 @@ if __name__ == "__main__":
     ]
     filename = "metric_outputs.pkl"
     labels = ["CW Adv Train", "DeepFool Adv Train", "PGD Adv Train", "PGD & CW Adv Train", "Standard"]
-    print_combined_graphs(paths,filename,labels)
+    print_combined_graphs(paths, filename, labels)
