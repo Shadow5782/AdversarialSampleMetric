@@ -9,6 +9,8 @@ import numpy as np
 
 # Print metric results as a graph with a table
 def print_graph_and_table(filepath: str, filename: str, use_acc: bool = True):
+    plt.clf()
+    
     # Open results list from pickle file
     with open(filepath + "/" + filename, "rb") as file:
         results = np.array(pickle.load(file))
@@ -119,17 +121,17 @@ if __name__ == "__main__":
     # Testing
     # print_graph_and_table("metric_results/advTrainCW", "metric_outputs.pkl")
     # print_graph_and_table("metric_results/advTrainDF", "metric_outputs.pkl")
-    # print_graph_and_table("metric_results/advTrainPGD", "metric_outputs.pkl")
-    # print_graph_and_table("metric_results/advTrainPGDandCW", "metric_outputs.pkl")
-    # print_graph_and_table("metric_results/standardNet", "metric_outputs.pkl")
+    print_graph_and_table("metric_results/advTrainPGD", "metric_outputs.pkl")
+    print_graph_and_table("metric_results/advTrainPGDandCW", "metric_outputs.pkl")
+    print_graph_and_table("metric_results/standardNet", "metric_outputs.pkl")
 
-    paths = [
-        "metric_results/advTrainCW",
-        "metric_results/advTrainDF",
-        "metric_results/advTrainPGD",
-        "metric_results/advTrainPGDandCW",
-        "metric_results/standardNet"
-    ]
-    filename = "metric_outputs.pkl"
-    labels = ["CW Adv Train", "DeepFool Adv Train", "PGD Adv Train", "PGD & CW Adv Train", "Standard"]
-    print_combined_graphs(paths, filename, labels)
+    # paths = [
+    #     "metric_results/advTrainCW",
+    #     "metric_results/advTrainDF",
+    #     "metric_results/advTrainPGD",
+    #     "metric_results/advTrainPGDandCW",
+    #     "metric_results/standardNet"
+    # ]
+    # filename = "metric_outputs.pkl"
+    # labels = ["CW Adv Train", "DeepFool Adv Train", "PGD Adv Train", "PGD & CW Adv Train", "Standard"]
+    # print_combined_graphs(paths, filename, labels)
