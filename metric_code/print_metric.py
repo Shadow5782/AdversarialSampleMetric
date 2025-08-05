@@ -84,7 +84,7 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str], us
     colors = ["b", "g", "r", "c", "m", "y", "k"]
 
     if len(colors) < len(paths):
-        raise Exception("More colors needed, adjust manually in code: \"print_metric.py\" line 71")
+        raise Exception("More colors needed, adjust manually in code: \"print_metric.py\" line 87")
 
     for i in range(0, len(paths)):
         with open(paths[i] + "/" + filename, "rb") as file:
