@@ -80,7 +80,7 @@ In order to perform a targeted attack, every target needs to be set to a random 
 - _data_path_: Path to the folder containing the .png-files which need to get random targets.
 
 ### Training a white box model: "network_training.py"
-Now a white box model can be trained. The architecture of the model can be written as a class in a seperate file and imported into the code at line 139. All the hyperparameters can be set from line 115 aswell. 
+Now a white box model can be trained. The architecture of the model can be written as a class in a seperate file and imported into the code at line 143. All the hyperparameters can be set from line 119 aswell. 
 
 The script runs the training with the set hyperparameters on a cuda-device if available. In the end a .pth-checkpoint will be stored and a result-graph created. 
 
@@ -89,7 +89,7 @@ The script runs the training with the set hyperparameters on a cuda-device if av
 - _working_dir_: Folder to where the checkpoint and the result-graphs will be stored.
 - _model_name_: Name of the checkpoint-File (Without file-ending).
 
-Note that the corresponing architecture of the model must be imported at line 139.
+Note that the corresponing architecture of the model must be imported at line 143.
 
 ### Performing a Grey-Box or Black-Box attack ("label_substitude_data.py", "train_substitute_network.py", "augment_substitute_data.py")
 In order to train a grey- or black-box model for a attack, a substitude dataset must be created. These three scripts are used for that. 
@@ -107,7 +107,7 @@ Note that the corresponing architecture of the white-box model must be imported 
 - _working_dir_: Folder to where the checkpoint and the result-graphs will be stored.
 - _model_name_: Name of the checkpoint-File (Without file-ending).
 
-Note that the corresponing architecture of the grey-box or black-box model must be imported at line 62.
+Note that the corresponing architecture of the grey-box or black-box model must be imported at line 63.
 
 #### Usage of "augment_substitute_data.py"
 - _substitude_data_path_: Path to a folder containing the augmented data.
@@ -132,20 +132,20 @@ Now the metric can be calculated as a white-box, grey-box and black-box model ha
 - _distance_steps_: Amount of metric runs from min to max.
 - _max_iterations_: Maximum number of iterations one attack can run.
 
-Note that the corresponing architectures of the white-box, grey-box and black-box model must be imported at line 65, 72, 79.
+Note that the corresponing architectures of the white-box, grey-box and black-box model must be imported at line 67, 74, 81.
 
 ### Trying a defense-strategy: "adversarial_training.py"
-For the evaluation in the paper four different types of adversarial training were used. This script was used to train the models. Functionality is the same as "network_training.py" with the addition of the adversarial training in the training-function. The type of adversarial training can be set as a parameter in line 260.
+For the evaluation in the paper four different types of adversarial training were used. This script was used to train the models. Functionality is the same as "network_training.py" with the addition of the adversarial training in the training-function. The type of adversarial training can be set as a parameter in line 263.
 
 #### Usage of "adversarial_training.py"
 - _data_path_: Path to a folder containing a "train"-folder with the images for training and a "test"-folder with the images for testing.
 - _working_dir_: Folder to where the checkpoint and the result-graphs will be stored.
 - _model_name_: Name of the checkpoint-File (Without file-ending).
 
-In line 260: "generation_algo_mode":
+In line 263: "generation_algo_mode":
 - 0: PGD adversarial training
 - 1: CW adversarial training
 - 2: PGD & CW adversarial training
 - 3: DeepFool adversarial training
 
-Note that the corresponing architecture of the model must be imported at line 253.
+Note that the corresponing architecture of the model must be imported at line 256.
