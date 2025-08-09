@@ -10,7 +10,7 @@ import numpy as np
 # Print metric results as a graph with a table
 def print_graph_and_table(filepath: str, filename: str, use_acc: bool = True):
     plt.clf()
-    
+
     # Open results list from pickle file
     with open(filepath + "/" + filename, "rb") as file:
         results = np.array(pickle.load(file))
@@ -20,7 +20,6 @@ def print_graph_and_table(filepath: str, filename: str, use_acc: bool = True):
         plt.plot(results[0], 1 - results[2], "o-r")
     else:
         plt.plot(results[0], results[2], "o-r")
-    plt.ylim(top=1, bottom=0)
     plt.ylabel("Robustness Score")
     plt.xlabel("Perturbation")
     plt.title("Robustness vs Perturbation Curve")
@@ -93,7 +92,6 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str], us
                 plt.plot(results[0], 1 - results[2], f"o-{colors[i]}", label=labels[i])
             else:
                 plt.plot(results[0], results[2], f"o-{colors[i]}", label=labels[i])
-    # plt.ylim(top=1, bottom=0)
     plt.ylabel("Robustness Score")
     plt.xlabel("Perturbation")
     plt.title("Robustness vs Perturbation Curve")
@@ -119,8 +117,8 @@ def print_combined_graphs(paths: list[str], filename: str, labels: list[str], us
 
 if __name__ == "__main__":
     # Testing
-    # print_graph_and_table("metric_results/advTrainCW", "metric_outputs.pkl")
-    # print_graph_and_table("metric_results/advTrainDF", "metric_outputs.pkl")
+    print_graph_and_table("metric_results/advTrainCW", "metric_outputs.pkl")
+    print_graph_and_table("metric_results/advTrainDF", "metric_outputs.pkl")
     print_graph_and_table("metric_results/advTrainPGD", "metric_outputs.pkl")
     print_graph_and_table("metric_results/advTrainPGDandCW", "metric_outputs.pkl")
     print_graph_and_table("metric_results/standardNet", "metric_outputs.pkl")
