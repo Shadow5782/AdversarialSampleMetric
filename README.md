@@ -6,11 +6,8 @@ This is the code repository to the research paper "Towards a Metric to Assess Ne
 When using the metric please cite:
 ```
 @InProceedings{10.1007/978-3-032-00642-4_16,
-author="Geier, Johannes
-and Heinl, Patrizia",
-editor="Skopik, Florian
-and Naessens, Vincent
-and De Sutter, Bjorn",
+author="Geier, Johannes and Heinl, Patrizia",
+editor="Skopik, Florian and Naessens, Vincent and De Sutter, Bjorn",
 title="Towards a Metric to Assess Neural Network Resilience Against Adversarial Samples",
 booktitle="Availability, Reliability and Security",
 year="2025",
