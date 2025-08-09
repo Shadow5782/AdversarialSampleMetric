@@ -1,11 +1,24 @@
 
 # A Metric to Assess Neural Network Resilience Against Adversarial Samples
 
-This is the code repository to the research paper "Towards a Metric to Assess Neural Network Resilience Against Adversarial Samples". The results of the evaluation in the paper can be found in detail in folder __"metric_results"__.
+This is the code repository to the research paper "Towards a Metric to Assess Neural Network Resilience Against Adversarial Samples" (https://doi.org/10.1007/978-3-032-00642-4_16). The results of the evaluation in the paper can be found in detail in folder __"metric_results"__.
 
 When using the metric please cite:
 ```
-TBD
+@InProceedings{10.1007/978-3-032-00642-4_16,
+author="Geier, Johannes
+and Heinl, Patrizia",
+editor="Skopik, Florian
+and Naessens, Vincent
+and De Sutter, Bjorn",
+title="Towards a Metric to Assess Neural Network Resilience Against Adversarial Samples",
+booktitle="Availability, Reliability and Security",
+year="2025",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="272--290",
+isbn="978-3-032-00642-4"
+}
 ```
 
 As the implemented attacks were from the "__TorchAttacks__" package, please also cite:
